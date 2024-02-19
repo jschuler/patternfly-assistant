@@ -1,5 +1,5 @@
 body {
-  font-size: var(--pf-v5-global--FontSize--sm);
+  font-size: var(--pf-v5-global--FontSize--md);
 }
 
 #webpack-dev-server-client-overlay {
@@ -42,7 +42,7 @@ body {
 }
 
 .code-preview-modal .pf-v5-c-modal-box__body {
-  margin: -24px;
+  margin: -24px -16px;
   padding: 0px;
   background-color: white;
 }

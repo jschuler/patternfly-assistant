@@ -1,6 +1,8 @@
 // src/App.tsx
 import React from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { TextContent, Text, Button } from "@patternfly/react-core";
+import { GithubIcon } from "@patternfly/react-icons";
 import Chat from "./components/Chat";
 import "@patternfly/react-core/dist/styles/base.css";
 import "./App.css";
@@ -11,7 +13,18 @@ const App: React.FC = () => {
       <div className="App">
         <header className="App-header">
           {/* align center */}
-          <h1 style={{ textAlign: "center" }}><strong>PatternFly assistant</strong></h1>
+          <TextContent style={{ textAlign: "center" }}>
+            <Text component="h1">PatternFly assistant</Text>
+            <Button
+              variant="plain"
+              component="a"
+              href="https://github.com/jschuler/patternfly-assistant"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <GithubIcon />
+            </Button>
+          </TextContent>
         </header>
         <main>
           <Chat />
