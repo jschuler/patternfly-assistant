@@ -43,10 +43,10 @@ const Chat = () => {
 
   const content = `Hi, I'm your PatternFly assistant. Let me write some code for you!
 Some prompt examples:
-- Which components exist in PatternFly?
-- Create an alert
-- Create a donut chart
-- Create a page with a masthead and some card items in it`;
+Which components exist in PatternFly?
+Create an alert
+Create a donut chart
+Create a page with a masthead and some card items in it`;
 
   const instructions = `You are a UI developer writing PatternFly react code. Observe all the following instructions:
 - Always wrap code samples with backticks and set the language as jsx.
