@@ -2,8 +2,14 @@ import * as React from "react";
 import { useLiveRunner, CodeEditor } from "react-live-runner";
 import * as reactCoreModule from "@patternfly/react-core";
 import * as reactIconsModule from "@patternfly/react-icons";
+import * as reactTableModule from "@patternfly/react-table";
+import * as reactChartsModule from "@patternfly/react-charts";
 import sdk from "@stackblitz/sdk";
 import { Toast } from "./Toast";
+
+export const reactCoreImports = `${Object.keys(reactCoreModule)}`;
+export const reactChartsImports = `${Object.keys(reactChartsModule)}`;
+export const reactTableImports = `${Object.keys(reactTableModule)}`;
 
 const Button = reactCoreModule.Button;
 const Modal = reactCoreModule.Modal;
@@ -12,12 +18,16 @@ const CopyIcon = reactIconsModule.CopyIcon;
 const CodeIcon = reactIconsModule.CodeIcon;
 
 const scope = {
-  ...reactCoreModule,
-  ...reactIconsModule,
+  // ...reactCoreModule,
+  // ...reactIconsModule,
+  // ...reactTableModule,
+  // ...reactChartsModule,
   import: {
     react: React,
     "@patternfly/react-core": reactCoreModule,
     "@patternfly/react-icons": reactIconsModule,
+    "@patternfly/react-table": reactTableModule,
+    "@patternfly/react-charts": reactChartsModule,
   },
 };
 
@@ -60,6 +70,8 @@ root.render(
         dependencies: {
           "@patternfly/react-core": "^5.2.0",
           "@patternfly/react-icons": "^5.2.0",
+          "@patternfly/react-table": "^5.2.0",
+          "@patternfly/react-charts": "^7.2.0",
         },
         settings: {
           compile: {

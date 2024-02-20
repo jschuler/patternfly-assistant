@@ -13,6 +13,22 @@ import Message from "./Message";
 import OpenAI from "openai";
 import { MessageDto } from "../models/MessageDto";
 import SendIcon from "@mui/icons-material/Send";
+// import {
+//   reactCoreImports,
+//   reactChartsImports,
+//   reactTableImports,
+// } from "./Preview";
+
+/*
+    - The following imports only exist in '@patternfly/react-table': [${reactTableImports}]
+    - The following imports only exist in '@patternfly/react-charts': [${reactChartsImports}]
+    - The following imports only exist in '@patternfly/react-core': [${reactCoreImports}]
+    */
+
+const files = [
+  "file-LvjCLQQyGVGxFceXH8f1DjYa", // combined-examples.md
+  "file-67jZeUN2UdZDvzum7mnC9YrW", // patternfly-exports.md
+];
 
 const Chat = () => {
   const [isWaiting, setIsWaiting] = useState<boolean>(false);
@@ -27,28 +43,48 @@ const Chat = () => {
 
   const content = `Hi, I'm your PatternFly assistant. Let me write some code for you!
 Some prompt examples:
-- Create a button
+- Which components exist in PatternFly?
 - Create an alert
+- Create a donut chart
 - Create a page with a masthead and some card items in it`;
 
-  const instructions = `You are a UI developer writing PatternFly react code. Observe the following rules:
+  const instructions = `You are a UI developer writing PatternFly react code. Observe all the following instructions:
 - Always wrap code samples with backticks and set the language as jsx.
-- You can only import from 'react', '@patternfly/react-core' and '@patternfly/react-icons'.
+- You can only import from 'react', '@patternfly/react-core', '@patternfly/react-icons', '@patternfly/react-table', and '@patternfly/react-charts'.
 - Try to return only a single code sample in your output.
 - For styling, use inline styles only.
 - Your knowledge of PatternFly should only come from the code samples within the retrieved files.
-- When asked about page headers or mastheads, use the Masthead component imports. Do not import PageHeader component.
+- When asked about page headers or mastheads, use the Masthead component imports.
 - As an image placeholder or PatternFly logo, you can use this URL: "https://www.patternfly.org/assets/Favicon-Light-32x32.png".
 - When importing from "@patternfly/react-icons", import from the root barrel file only. Example:
 Bad: import BarsIcon from '@patternfly/react-icons/dist/esm/icons/bars-icon';
 Good: import { BarsIcon } from '@patternfly/react-icons';
 - When using the PageSideBar component, it should look similar to:
 <PageSidebar isSidebarOpen={isSidebarOpen} id="vertical-sidebar"><PageSidebarBody>NAV HERE</PageSidebarBody></PageSidebar>
+- A table should look similar to:
+<Table>
+  <Thead>
+    <Tr>
+      <Th>Header</Th>
+    </Tr>
+  </Thead>
+  <Tbody>
+    <Td>Cell</Td>
+  </Tbody>
+</Table>
+- In your response, don't make source references (for example 【1†source】)'
+- Do not import '@patternfly/react-core/dist/styles/base.css'.
+- At the end of the code sample, add a default export.
+- All components and references should exist within the same code sample. The code sample should not reference previous examples.
+- Do not make mention of the retrieved / shared document.
+- Icon imports come from '@patternfly/react-icons'.
+- Do not mix imports with the wrong packages! For example, Table, Thead, Tbody, Tr, Th, Td are imported from '@patternfly/react-table', NOT '@patternfly/react-core'
+- Do not use imports that are not found in the retrieved files.
 `;
 
   useEffect(() => {
     initChatBot();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -76,10 +112,8 @@ Good: import { BarsIcon } from '@patternfly/react-icons';
       name: "PatternFly developer",
       instructions,
       tools: [{ type: "retrieval" }],
-      model: "gpt-4-1106-preview",
-      file_ids: [
-        "file-MxEAK9OvZ3iNnkeOENV7M9TC", // mega-docs.md
-      ],
+      model: "gpt-4-turbo-preview",
+      file_ids: files,
     });
 
     // Create a thread
@@ -149,10 +183,7 @@ Good: import { BarsIcon } from '@patternfly/react-icons';
     if (lastMessage) {
       const response = lastMessage.content[0]["text"].value;
       console.log(response);
-      setMessages([
-        ...messages,
-        createNewMessage(response, false),
-      ]);
+      setMessages([...messages, createNewMessage(response, false)]);
     }
   };
 
@@ -166,7 +197,7 @@ Good: import { BarsIcon } from '@patternfly/react-icons';
   const notReady = isWaiting || !initialized;
 
   return (
-    <Container>
+    <Container maxWidth="xl">
       <Grid container direction="column" spacing={2} paddingBottom={2}>
         {messages.map((message, index) => (
           <Grid
@@ -188,7 +219,11 @@ Good: import { BarsIcon } from '@patternfly/react-icons';
       >
         <Grid item sm={12} xs={12}>
           <TextField
-            label="Type your message"
+            label={
+              !isWaiting
+                ? "Type your message"
+                : "Turtles are on their way to get an answer... this can take some time..."
+            }
             variant="outlined"
             disabled={notReady}
             fullWidth
